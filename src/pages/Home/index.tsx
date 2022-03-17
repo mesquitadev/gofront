@@ -8,9 +8,11 @@ import { useCart } from '../../hooks/useCart';
 
 interface Product {
   id: number;
-  title: string;
+  name: string;
+  description: string;
   price: number;
-  image: string;
+  imageURL: string;
+  stock: [];
 }
 
 interface ProductFormatted extends Product {
@@ -26,7 +28,7 @@ const Home = (): JSX.Element => {
   const { addProduct, cart } = useCart();
 
   const cartItemsAmount = cart.reduce((sumAmount, product) => {
-    sumAmount[product.id] = product.amount
+    sumAmount[product.id] = Number(product.quantity)
     return sumAmount
   }, {} as CartItemsAmount)
 
@@ -52,8 +54,9 @@ const Home = (): JSX.Element => {
     <ProductList>
       {products.map((product) => (
         <li key={product.id}>
-        <img src={product.image} alt={product.title} />
-        <strong>{product.title}</strong>
+        <img src={product.imageURL} alt={product.name} />
+        <strong>{product.name}</strong>
+        <strong>{product.description}</strong>
         <span>{product.price}</span>
         <button
           type="button"

@@ -14,19 +14,19 @@ interface Product {
   title: string;
   price: number;
   image: string;
-  amount: number;
+  quantity: number;
 }
 
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount } = useCart();
 
   const cartFormatted = cart.map(product => ({
-    ...product, priceFormatted: formatPrice(product.price), subtotal: formatPrice(product.price * product.amount)
+    ...product, priceFormatted: formatPrice(product.price), subtotal: formatPrice(product.price * product.quantity)
   }))
   const total =
     formatPrice(
       cartFormatted.reduce((sumTotal, product) => {
-        sumTotal += product.price * product.amount
+        sumTotal += product.price * product.quantity
 
         return sumTotal
       }, 0)
@@ -35,7 +35,7 @@ const Cart = (): JSX.Element => {
   function handleProductIncrement(product: Product) {
     const IncrementArguments = {
       productId: product.id,
-      amount: product.amount + 1
+      amount: product.quantity + 1
     }
     updateProductAmount(IncrementArguments)
   }
@@ -43,7 +43,7 @@ const Cart = (): JSX.Element => {
   function handleProductDecrement(product: Product) {
     const IncrementArguments = {
       productId: product.id,
-      amount: product.amount - 1
+      amount: product.quantity - 1
     }
     updateProductAmount(IncrementArguments)
   }
@@ -79,7 +79,7 @@ const Cart = (): JSX.Element => {
                 <button
                   type="button"
                   data-testid="decrement-product"
-                disabled={product.amount <= 1}
+                disabled={product.quantity <= 1}
                 onClick={() => handleProductDecrement(product)}
                 >
                   <MdRemoveCircleOutline size={20} />
@@ -88,7 +88,7 @@ const Cart = (): JSX.Element => {
                   type="text"
                   data-testid="product-amount"
                   readOnly
-                  value={product.amount}
+                  value={product.quantity}
                 />
                 <button
                   type="button"
