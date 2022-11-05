@@ -62,6 +62,7 @@ const Products = (): JSX.Element => {
                 .then(response => {
                     resolve(response)
                     handleShowModal()
+                    loadProducts()
                     toast('Adicionado')
                 })
                 .catch((err) => reject(err))
@@ -97,17 +98,6 @@ const Products = (): JSX.Element => {
 
     const handleShowModal = () => setShowAddProductModal(state => !state)
 
-    function handleEditProductModal(id: number) {
-        return new Promise((resolve, reject) => {
-            api.get(`products/${id}`)
-                .then(response => {
-                    resolve(response)
-                    handleShowModal(response.data)
-
-                })
-                .catch((err) => reject(err))
-        })
-    }
 
     return (
         <>
@@ -150,13 +140,6 @@ const Products = (): JSX.Element => {
                                     onClick={() => handleRemoveProduct(product.id)}
                                 >
                                     <MdDelete size={20}/>
-                                </button>
-                                <button
-                                    type="button"
-                                    data-testid="remove-product"
-                                    onClick={() => handleEditProductModal(product.id)}
-                                >
-                                    <MdEdit size={20}/>
                                 </button>
                             </td>
                         </tr>
@@ -211,47 +194,6 @@ const Products = (): JSX.Element => {
                             <Form.Label>Quantidade</Form.Label>
                             <Form.Control type="number" placeholder="Quantidade no Estoque" required
                                           onChange={event => setQuantity(event.target.value)}/>
-                        </Form.Group>
-
-                        <Button variant="primary" onClick={addProduct}>
-                            Submit
-                        </Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-            <Modal show={showProductEditModal} onHide={handleShowModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Adicionar Produto</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Produto</Form.Label>
-                            <Form.Control type="text" placeholder="Nome do produto" required
-                                          onChange={event => setName(event.target.value)} value={data?.name}/>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Descrição</Form.Label>
-                            <Form.Control type="text" placeholder="Descrição" required
-                                          onChange={event => setDescription(event.target.value)} value={data?.description} />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Imagem</Form.Label>
-                            <Form.Control type="text" placeholder="Url da Imagem" required
-                                          onChange={event => setImageURL(event.target.value)} value={data?.imageURL} />
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Preço</Form.Label>
-                            <Form.Control type="text" placeholder="Preço do produto" required
-                                          onChange={event => setPrice(event.target.value)} value={data?.price}/>
-                        </Form.Group>
-
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                            <Form.Label>Quantidade</Form.Label>
-                            <Form.Control type="number" placeholder="Quantidade no Estoque" required
-                                          onChange={event => setQuantity(event.target.value)} value={data?.quantity}/>
                         </Form.Group>
 
                         <Button variant="primary" onClick={addProduct}>

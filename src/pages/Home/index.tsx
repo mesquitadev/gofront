@@ -16,6 +16,7 @@ interface Product {
 }
 
 interface ProductFormatted extends Product {
+  quantity: any;
   priceFormatted: string;
 }
 
@@ -58,6 +59,7 @@ const Home = (): JSX.Element => {
         <strong>{product.name}</strong>
         <strong>{product.description}</strong>
         <span>{product.price}</span>
+        <span>{product.quantity} Unidades em estoque</span>
         <button
           type="button"
           data-testid="add-product-button"
